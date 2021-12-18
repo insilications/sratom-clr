@@ -139,38 +139,37 @@ def build(bld):
             defines         = defines + ['SRATOM_STATIC', 'SRATOM_INTERNAL'])
 
     if bld.env.BUILD_TESTS:
-        test_libs   = libs
-        test_cflags = ['']
-        test_linkflags  = ['']
-        if not bld.env.NO_COVERAGE:
-            test_cflags    += ['--coverage']
-            test_linkflags += ['--coverage']
+        #test_libs   = libs
+        #test_cflags = ['']
+        #test_linkflags  = ['']
+        #if not bld.env.NO_COVERAGE:
+            #test_cflags    += ['--coverage']
+            #test_linkflags += ['--coverage']
 
         # Static library (for unit test code coverage)
-        bld(features     = 'c cstlib',
-            source       = lib_source,
-            includes     = ['include'],
-            lib          = test_libs,
-            uselib       = 'SERD SORD LV2',
-            name         = 'libsratom_profiled',
-            target       = 'sratom_profiled',
-            install_path = '',
-            defines      = defines + ['SRATOM_STATIC', 'SRATOM_INTERNAL'],
-            cflags       = test_cflags,
-            linkflags    = test_linkflags)
+        #bld(features     = 'c cstlib',
+            #source       = lib_source,
+            #includes     = ['include'],
+            #lib          = test_libs,
+            #uselib       = 'SERD SORD LV2',
+            #name         = 'libsratom_profiled',
+            #target       = 'sratom_profiled',
+            #install_path = '',
+            #defines      = defines + ['SRATOM_STATIC', 'SRATOM_INTERNAL'],
+            #cflags       = test_cflags,
+            #linkflags    = test_linkflags)
 
         # Unit test program
         bld(features     = 'c cprogram',
             source       = 'test/test_sratom.c',
             includes     = ['include'],
-            use          = 'libsratom_profiled',
-            lib          = test_libs,
+            use          = 'libsratom_static',
+            lib          = libs,
             uselib       = 'SERD SORD LV2',
             target       = 'test_sratom',
             install_path = '',
             defines      = defines + ['SRATOM_STATIC'],
-            cflags       = test_cflags,
-            linkflags    = test_linkflags)
+            cflags       = libflags)
 
     # Documentation
     if bld.env.DOCS:
